@@ -1,16 +1,50 @@
-'use strict';
-
-const fs         = require('fs');
-const path       = require('path');
-const NodeHelper = require('node_helper');
-const Player     = require('node-aplay');
-const moment     = require('moment');
-
-module.exports = NodeHelper.create({
-    isLoaded: false,
-    config:   null,
+Module.register('MMM-Sounds2', {
 
     /**
+     * Default Config
+     */
+    defaults: {
+        debug:          false,
+        startupSound:   null,
+        defaultDelay:   10,
+        quietTimeStart: null,
+        quietTimeEnd:   null
+    },
+
+    /**
+     * Module Start
+     */
+    start: function() {
+        this.sendSocketNotification('CONFIG', this.config);
+        Log.info('Starting module: ' + this.name);
+    },
+    
+    
+    /**
+    * Module Start
+    */
+    getScripts: function() {
+		return [
+			this.file('sounds.js'),
+		]
+	},
+
+
+
+    /**
+     * Notification Received from other modules
+     *
+     * @param {String} notification
+     * @param {*}      payload
+     */
+    notificationReceived: function(notification, payload, sender) {
+        if (notification === 'PLAY_SOUND') {
+			this.log('Gotcha');
+            this.sendSocketNotification(notification, payload);
+        }
+    },
+    
+        /**
      * @param {String} notification
      * @param {*}      payload
      */
@@ -25,6 +59,8 @@ module.exports = NodeHelper.create({
                 }
             }
         } else if (notification === 'PLAY_SOUND') {
+			this.log('Gotcha');
+			playSound("ping");
             if (typeof payload === 'string') {
                 this.playFile(payload);
             } else if (typeof payload === 'object') {
@@ -71,28 +107,31 @@ module.exports = NodeHelper.create({
         }
 
         if (play) {
-            delay = delay || this.config.defaultDelay;
+			playSound("dead");
+		}
+	},
+	
+	loadSound: function(name) {
+			  var sound = sounds[name];
+			  var url = sound.url;
+			  var buffer = sound.buffer;
 
-            let soundfile = __dirname + '/sounds/' + filename;
+			  var request = new XMLHttpRequest();
+			  request.open('GET', url, true);
+			  request.responseType = 'arraybuffer';
 
-            // Make sure file exists before playing
-            try {
-                fs.accessSync(soundfile, fs.F_OK);
-            } catch (e) {
-                // Custom sequence doesn't exist
-                this.log('Sound does not exist: ' + soundfile);
-                return;
-            }
+			  request.onload = function() {
+				soundContext.decodeAudioData(request.response, function(newBuffer) {
+				  sound.buffer = newBuffer;
+				});
+			  }
 
-            this.log('Playing ' + filename + ' with ' + delay + 'ms delay', true);
-
-            setTimeout(() => {
-                new Player(path.normalize(__dirname + '/sounds/' + filename)).play();
-            }, delay);
-        } else {
-            this.log('Not playing sound as quiet hours are in effect');
-        }
-    },
+			  request.send();
+	},
+	
+	playSound: function (name, options) {
+		playSound("ping");
+	},
 
     /**
      * Outputs log messages
@@ -102,7 +141,8 @@ module.exports = NodeHelper.create({
      */
     log: function (message, debug_only) {
         if (!debug_only || (debug_only && typeof this.config.debug !== 'undefined' && this.config.debug)) {
-            console.log('[' + moment().format('YYYY-MM-DD HH:mm:ss') + '] [MMM-Sounds] ' + message);
+            console.log('[' + moment().format('YYYY-MM-DD HH:mm:ss') + '] [MMM-Sounds2] ' + message);
         }
     }
+    
 });
