@@ -1,24 +1,13 @@
-# MMM-Sounds
+# MMM-Sounds2
 
-This a module for the [MagicMirror](https://magicmirror.builders/).
-It can play WAV sounds through your Pi when triggered by other modules.
 
-**This can only play WAV files.**
-
-Although this has been developed for the Raspbian operating system, any system that uses `alsa` would likely work too.
 
 
 ## Prerequisites
-1. [Read this to configure sound output for your Raspberry Pi](https://www.raspberrypi.org/documentation/configuration/audio-config.md)
-2. Make sure `alsa` is installed on your Pi: `sudo apt-get install alsa-base alsa-utils`
-3. Adjust your volume output, try 100% first with: `alsamixer`
-4. Optional, test your speaker output: `speaker-test -t sine -f 440 -c 2 -s 1`
+
 
 ## Module Installation
-1. Navigate into your MagicMirror's `modules` folder and execute `git clone https://github.com/jc21/MMM-Sounds.git`
-2. Execute `cd MMM-Sounds && npm install` to install the node dependencies.
-3. Optional, test the alsa player with a wav file: `aplay sounds/woop-woop.wav`
-4. Add config to your magic mirror config file
+1. Navigate into your MagicMirror's `modules` folder and execute `git clone https://github.com/sigel/MMM-Sounds2.git`
 
 
 ## Using the module
@@ -28,9 +17,9 @@ To use this module, add it to the modules array in the `config/config.js` file:
 ````javascript
 modules: [
 	{
-		module: 'MMM-Sounds',
+		module: 'MMM-Sounds2',
 		config: {
-			startupSound:   'wobble.wav',
+			startupSound:   'start.mp3',
 			quietTimeStart: '23:00',      // 11pm
 			quietTimeEnd:   '07:00'       // 7am
 		}
@@ -128,13 +117,3 @@ this.sendNotification('PLAY_SOUND', {sound: 'wobble.wav', delay: 1000}); // 1 se
 - `twip.wav`
 - `wobble.wav`
 - `woop-woop.wav`
-
-
-## Adding sounds
-
-Just put your WAV files in `modules/MMM-Sounds/sounds/` and reference those files in your other modules.
-
-
-## Known modules that play sounds
-
-- [MMM-IFTTT](https://github.com/jc21/MMM-IFTTT)
