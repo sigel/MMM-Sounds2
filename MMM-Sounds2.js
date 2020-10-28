@@ -18,8 +18,8 @@ Module.register('MMM-Sounds2', {
         this.sendSocketNotification('CONFIG', this.config);
         Log.info('Starting module: ' + this.name);
     },
-    
-    
+
+
     /**
     * Module Start
     */
@@ -38,39 +38,14 @@ Module.register('MMM-Sounds2', {
      * @param {*}      payload
      */
     notificationReceived: function(notification, payload, sender) {
-        if (notification === 'PLAY_SOUND') {
-			this.log('Gotcha');
-            this.sendSocketNotification(notification, payload);
+        if (notification === 'PLAY_ALERT') {
+		this.log('Received Play Alert Notification');
+		playSound("ping");
         }
-    },
-    
-        /**
-     * @param {String} notification
-     * @param {*}      payload
-     */
-    socketNotificationReceived: function (notification, payload) {
-        if (notification === 'CONFIG') {
-            if (!this.isLoaded) {
-                this.config   = payload;
-                this.isLoaded = true;
-
-                if (this.config.startupSound) {
-                    this.playFile(this.config.startupSound);
-                }
-            }
-        } else if (notification === 'PLAY_SOUND') {
-			this.log('Gotcha');
-			playSound("ping");
-            if (typeof payload === 'string') {
-                this.playFile(payload);
-            } else if (typeof payload === 'object') {
-                if (typeof payload.sound === 'undefined' || !payload.sound) {
-                    this.log('Could not play sound, notification payload `sound` was not supplied');
-                } else {
-                    this.playFile(payload.sound, payload.delay);
-                }
-            }
-        }
+	if (notification === 'SHOW_ALERT') {
+		this.log('Alert Module Triggered');
+		playSound("ping");
+	}
     },
 
     /**
@@ -110,28 +85,7 @@ Module.register('MMM-Sounds2', {
 			playSound("dead");
 		}
 	},
-	
-	loadSound: function(name) {
-			  var sound = sounds[name];
-			  var url = sound.url;
-			  var buffer = sound.buffer;
 
-			  var request = new XMLHttpRequest();
-			  request.open('GET', url, true);
-			  request.responseType = 'arraybuffer';
-
-			  request.onload = function() {
-				soundContext.decodeAudioData(request.response, function(newBuffer) {
-				  sound.buffer = newBuffer;
-				});
-			  }
-
-			  request.send();
-	},
-	
-	playSound: function (name, options) {
-		playSound("ping");
-	},
 
     /**
      * Outputs log messages
@@ -144,5 +98,5 @@ Module.register('MMM-Sounds2', {
             console.log('[' + moment().format('YYYY-MM-DD HH:mm:ss') + '] [MMM-Sounds2] ' + message);
         }
     }
-    
+ 
 });
