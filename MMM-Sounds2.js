@@ -48,11 +48,13 @@ Module.register('MMM-Sounds2', {
         } else if (notification === 'PLAY_ALERT') {
 		        this.log('Received Play Alert Notification');
             if (typeof payload === 'string') {
+                this.log('Playing ' + payload.sound + );
                 this.playAlert(payload);
             } else if (typeof payload === 'object') {
                 if (typeof payload.sound === 'undefined' || !payload.sound) {
                     this.log('Could not play sound, `sound` was not supplied');
                 } else {
+                    this.log('Playing ' + payload.sound + ' with ' + payload.delay + 'ms delay');
                     this.playAlert(payload.sound, payload.delay);
                 }
             }
@@ -78,8 +80,8 @@ Module.register('MMM-Sounds2', {
         let play = true;
 
         if (this.config.quietTimeStart && this.config.quietTimeEnd) {
-            this.log('Quiet Time Start is: ' + this.config.quietTimeStart, true);
-            this.log('Quiet Time End is: ' + this.config.quietTimeEnd, true);
+            this.log('Quiet Time Start is: ' + this.config.quietTimeStart);
+            this.log('Quiet Time End is: ' + this.config.quietTimeEnd);
 
             let start_moment = moment(this.config.quietTimeStart, 'HH:mm');
             let end_moment   = moment(this.config.quietTimeEnd, 'HH:mm');
@@ -104,9 +106,9 @@ Module.register('MMM-Sounds2', {
 
         if (play) {
             delay = delay || this.config.defaultDelay;
-            this.log('Playing ' + soundname + ' with ' + delay + 'ms delay', true);
+            this.log('Playing ' + soundname + ' with ' + delay + 'ms delay');
             setTimeout(() => {
-                playSound("' + soundname + '");
+                playSound(soundname);
             }, delay);
 		    } else {
             this.log('Not playing sound as quiet hours are in effect');
