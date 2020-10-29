@@ -106,7 +106,7 @@ Module.register('MMM-Sounds2', {
             delay = delay || this.config.defaultDelay;
             this.log('Playing ' + soundname + ' with ' + delay + 'ms delay', true);
             setTimeout(() => {
-                playSound("' + soundname + '");
+                playSound(\""+ soundname + "\");
             }, delay);
 		    } else {
             this.log('Not playing sound as quiet hours are in effect');
