@@ -48,7 +48,7 @@ Module.register('MMM-Sounds2', {
         } else if (notification === 'PLAY_ALERT') {
 		        this.log('Received Play Alert Notification');
             if (typeof payload === 'string') {
-                this.log('Playing ' + payload.sound + );
+                this.log('Playing ' + payload.sound + ');
                 this.playAlert(payload);
             } else if (typeof payload === 'object') {
                 if (typeof payload.sound === 'undefined' || !payload.sound) {
