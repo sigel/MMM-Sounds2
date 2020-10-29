@@ -1,24 +1,24 @@
 Module.register('MMM-Sounds2', {
 
     /**
-     * Default Config
-     */
+    * Default Config
+    */
     defaults: {
         debug:          false,
-        startupSound:   null,
+        startupSound:   true,
+        alertSound:     true,
         defaultDelay:   10,
         quietTimeStart: null,
         quietTimeEnd:   null
     },
 
     /**
-     * Module Start
-     */
+    * Module Start
+    */
     start: function() {
         this.sendSocketNotification('CONFIG', this.config);
         Log.info('Starting module: ' + this.name);
     },
-
 
     /**
     * Module Start
@@ -27,31 +27,29 @@ Module.register('MMM-Sounds2', {
 		return [
 			this.file('sounds.js'),
 		]
-	},
-
-
+	  },
 
     /**
-     * Notification Received from other modules
-     *
-     * @param {String} notification
-     * @param {*}      payload
-     */
+    * Notification Received from other modules
+    *
+    * @param {String} notification
+    * @param {*}      payload
+    */
     notificationReceived: function(notification, payload, sender) {
         if (notification === 'PLAY_ALERT') {
-		this.log('Received Play Alert Notification');
-		playSound("ping");
+		        this.log('Received Play Alert Notification');
+		        playSound("alert");
         }
-	if (notification === 'SHOW_ALERT') {
-		this.log('Alert Module Triggered');
-		playSound("ping");
-	}
+	      if (notification === 'SHOW_ALERT') {
+		        this.log('Alert Module Triggered');
+		        playSound("alert");
+	     }
     },
 
     /**
-     * @param {String}  filename
-     * @param {Number} [delay]  in ms
-     */
+    * @param {String}  filename
+    * @param {Number} [delay]  in ms
+    */
     playFile: function (filename, delay) {
         // Only play if outside of quiet hours
         let play = true;
@@ -82,21 +80,20 @@ Module.register('MMM-Sounds2', {
         }
 
         if (play) {
-			playSound("dead");
+			playSound("alert");
 		}
-	},
-
+	 },
 
     /**
-     * Outputs log messages
-     *
-     * @param {String}  message
-     * @param {Boolean} [debug_only]
-     */
+    * Outputs log messages
+    *
+    * @param {String}  message
+    * @param {Boolean} [debug_only]
+    */
     log: function (message, debug_only) {
         if (!debug_only || (debug_only && typeof this.config.debug !== 'undefined' && this.config.debug)) {
             console.log('[' + moment().format('YYYY-MM-DD HH:mm:ss') + '] [MMM-Sounds2] ' + message);
         }
     }
- 
+
 });

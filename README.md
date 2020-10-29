@@ -1,10 +1,5 @@
 # MMM-Sounds2
-
-
-
-
-## Prerequisites
-
+Based on MMM-Sounds but instead of playing sound locally it gets played in browser for those who host their MagicMirror on a seperate server.
 
 ## Module Installation
 1. Navigate into your MagicMirror's `modules` folder and execute `git clone https://github.com/sigel/MMM-Sounds2.git`
@@ -19,7 +14,8 @@ modules: [
 	{
 		module: 'MMM-Sounds2',
 		config: {
-			startupSound:   'start.mp3',
+			startupSound:   true,					// Play sound on startup
+			alertSound:			true,					// Play alert sound when alert module is triggered
 			quietTimeStart: '23:00',      // 11pm
 			quietTimeEnd:   '07:00'       // 7am
 		}
@@ -42,9 +38,16 @@ The following properties can be configured:
 	<tbody>
 		<tr>
 			<td><code>startupSound</code></td>
-			<td>The sound to play after module startup<br>
-				<br><b>Possible values:</b> <code>string</code>
-				<br><b>Default value:</b> <code>null</code>
+			<td>Play sound after module startup<br>
+				<br><b>Possible values:</b> <code>boolean</code>
+				<br><b>Default value:</b> <code>true</code>
+			</td>
+		</tr>
+		<tr>
+			<td><code>alertSound</code></td>
+			<td>Play sound for alert module<br>
+				<br><b>Possible values:</b> <code>boolean</code>
+				<br><b>Default value:</b> <code>true</code>
 			</td>
 		</tr>
 		<tr>
@@ -99,21 +102,22 @@ From another module you can tell this module to play a sound in 2 ways:
 In your module:
 
 ```javascript
-this.sendNotification('PLAY_SOUND', 'wobble.wav');
+this.sendNotification('PLAY_ALERT', 'alert');
 ```
 
 or also specifying a delay:
 
 ```javascript
-this.sendNotification('PLAY_SOUND', {sound: 'wobble.wav', delay: 1000}); // 1 second delay
+this.sendNotification('PLAY_ALERT', {sound: 'alert', delay: 1000}); // 1 second delay
 ```
 
 
 ## Included sounds
 
-- `buzz.wav`
-- `sonar.wav`
-- `ta-ting.wav`
-- `twip.wav`
-- `wobble.wav`
-- `woop-woop.wav`
+- `alert`
+- `announcement`
+- `bells`
+- `chord`
+- `notify`
+- `startup`
+- `synth`

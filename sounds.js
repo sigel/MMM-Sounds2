@@ -1,9 +1,24 @@
 var sounds = {
-  "buzz" : {
-    url : "/modules/MMM-Sounds2/public/buzz.wav"
+  "alert" : {
+    url : "/modules/MMM-Sounds2/public/alert.mp3"
   },
-  "ping" : {
-    url : "/modules/MMM-Sounds2/public/ping.mp3"
+  "announcement" : {
+    url : "/modules/MMM-Sounds2/public/announcement.mp3"
+  },
+  "bells" : {
+    url : "/modules/MMM-Sounds2/public/bells.mp3"
+  },
+  "chord" : {
+    url : "/modules/MMM-Sounds2/public/chord.mp3"
+  },
+  "notify" : {
+    url : "/modules/MMM-Sounds2/public/notify.mp3"
+  },
+  "startup" : {
+    url : "/modules/MMM-Sounds2/public/startup.mp3"
+  },
+  "synth" : {
+    url : "/modules/MMM-Sounds2/public/synth.mp3"
   },
 };
 
