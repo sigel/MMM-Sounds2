@@ -36,13 +36,35 @@ Module.register('MMM-Sounds2', {
     * @param {*}      payload
     */
     notificationReceived: function(notification, payload, sender) {
-        if (notification === 'PLAY_ALERT') {
+      if (notification === 'CONFIG') {
+         if (!this.isLoaded) {
+            this.config   = payload;
+            this.isLoaded = true;
+            if (this.config.startupSound) {
+              this.log('Playing Startup Sound');
+              playSound("startup");
+            }
+          }
+        } else if (notification === 'PLAY_ALERT') {
 		        this.log('Received Play Alert Notification');
-		        playSound("alert");
-        }
-	      if (notification === 'SHOW_ALERT') {
-		        this.log('Alert Module Triggered');
-		        playSound("alert");
+            if (typeof payload === 'string') {
+                this.playAlert(payload);
+            } else if (typeof payload === 'object') {
+                if (typeof payload.sound === 'undefined' || !payload.sound) {
+                    this.log('Could not play sound, `sound` was not supplied');
+                } else {
+                    this.playAlert(payload.sound, payload.delay);
+                }
+            }
+        } else if (notification === 'SHOW_ALERT') {
+          if (!this.isLoaded) {
+             this.config   = payload;
+             this.isLoaded = true;
+             if (this.config.alertSound) {
+               this.log('Alert Module Sound Triggered');
+   		         playSound("alert");
+             }
+           }
 	     }
     },
 
@@ -50,8 +72,9 @@ Module.register('MMM-Sounds2', {
     * @param {String}  filename
     * @param {Number} [delay]  in ms
     */
-    playFile: function (filename, delay) {
+    playAlert: function (soundname, delay) {
         // Only play if outside of quiet hours
+        const moment = require('moment');
         let play = true;
 
         if (this.config.quietTimeStart && this.config.quietTimeEnd) {
@@ -80,8 +103,15 @@ Module.register('MMM-Sounds2', {
         }
 
         if (play) {
-			playSound("alert");
-		}
+            delay = delay || this.config.defaultDelay;
+            this.log('Playing ' + soundname + ' with ' + delay + 'ms delay', true);
+            setTimeout(() => {
+                playSound("' + soundname + '");
+            }, delay);
+		    } else {
+            this.log('Not playing sound as quiet hours are in effect');
+        }
+
 	 },
 
     /**

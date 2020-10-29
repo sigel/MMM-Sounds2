@@ -102,13 +102,13 @@ From another module you can tell this module to play a sound in 2 ways:
 In your module:
 
 ```javascript
-this.sendNotification('PLAY_ALERT', 'alert');
+self.sendNotification('PLAY_ALERT', 'alert');
 ```
 
 or also specifying a delay:
 
 ```javascript
-this.sendNotification('PLAY_ALERT', {sound: 'alert', delay: 1000}); // 1 second delay
+self.sendNotification('PLAY_ALERT', {sound: 'alert', delay: 1000}); // 1 second delay
 ```
 
 
