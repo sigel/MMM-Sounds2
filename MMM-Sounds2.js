@@ -74,7 +74,7 @@ Module.register('MMM-Sounds2', {
     */
     playAlert: function (soundname, delay) {
         // Only play if outside of quiet hours
-        const moment = require('moment');
+
         let play = true;
 
         if (this.config.quietTimeStart && this.config.quietTimeEnd) {
