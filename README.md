@@ -1,5 +1,9 @@
 # MMM-Sounds2
-Based on MMM-Sounds but instead of playing sound locally it gets played in browser for those who host their MagicMirror on a seperate server.
+Based on [MMM-Sounds](https://github.com/jc21/MMM-Sounds) but rather than playing the sound locally it gets played in browser for those who host their MagicMirror on a separate server.
+
+**NOTE:** Chrome blocks the autoplay of sounds until you interact with the site. Adding --autoplay-policy=no-user-gesture-required should do the trick, here is how I launch mine on my pi.
+
+chromium-browser --noerrdialogs --autoplay-policy=no-user-gesture-required --kiosk https://dash.url.com
 
 ## Module Installation
 1. Navigate into your MagicMirror's `modules` folder and execute `git clone https://github.com/sigel/MMM-Sounds2.git`
@@ -14,15 +18,14 @@ modules: [
 	{
 		module: 'MMM-Sounds2',
 		config: {
-			startupSound:   true,					// Play sound on startup
-			alertSound:			true,					// Play alert sound when alert module is triggered
-			quietTimeStart: '23:00',      // 11pm
-			quietTimeEnd:   '07:00'       // 7am
+			startupSound:	true,	// Play sound on startup
+			alertSound:	true,	// Play alert sound when alert module is triggered
+			quietTimeStart:	'23:00',	// 11pm
+			quietTimeEnd:	'07:00'	// 7am
 		}
 	}
 ]
 ````
-
 
 ## Configuration options
 

@@ -18,6 +18,10 @@ Module.register('MMM-Sounds2', {
     start: function() {
         this.sendSocketNotification('CONFIG', this.config);
         Log.info('Starting module: ' + this.name);
+        if (this.config.startupSound) {
+           this.log('Playing Startup Sound');
+           playSound("startup");
+        }
     },
 
     /**
@@ -36,38 +40,22 @@ Module.register('MMM-Sounds2', {
     * @param {*}      payload
     */
     notificationReceived: function(notification, payload, sender) {
-      if (notification === 'CONFIG') {
-         if (!this.isLoaded) {
-            this.config   = payload;
-            this.isLoaded = true;
-            if (this.config.startupSound) {
-              this.log('Playing Startup Sound');
-              playSound("startup");
-            }
-          }
-        } else if (notification === 'PLAY_ALERT') {
-		        this.log('Received Play Alert Notification');
+        if (notification === 'PLAY_ALERT') {
             if (typeof payload === 'string') {
-                this.log('Playing ' + payload.sound + ');
                 this.playAlert(payload);
             } else if (typeof payload === 'object') {
                 if (typeof payload.sound === 'undefined' || !payload.sound) {
                     this.log('Could not play sound, `sound` was not supplied');
                 } else {
-                    this.log('Playing ' + payload.sound + ' with ' + payload.delay + 'ms delay');
                     this.playAlert(payload.sound, payload.delay);
                 }
             }
         } else if (notification === 'SHOW_ALERT') {
-          if (!this.isLoaded) {
-             this.config   = payload;
-             this.isLoaded = true;
              if (this.config.alertSound) {
                this.log('Alert Module Sound Triggered');
-   		         playSound("alert");
+   	           playSound("alert");
              }
-           }
-	     }
+	      }
     },
 
     /**
