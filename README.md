@@ -3,7 +3,7 @@ Based on [MMM-Sounds](https://github.com/jc21/MMM-Sounds) but rather than playin
 
 **NOTE:** Chrome blocks the autoplay of sounds until you interact with the site. Adding --autoplay-policy=no-user-gesture-required should do the trick, here is how I launch mine on my pi.
 
-chromium-browser --noerrdialogs --autoplay-policy=no-user-gesture-required --kiosk https://dash.url.com
+chromium-browser --noerrdialogs --autoplay-policy=no-user-gesture-required --kiosk --incognito https://dash.url.com
 
 ## Module Installation
 1. Navigate into your MagicMirror's `modules` folder and execute `git clone https://github.com/sigel/MMM-Sounds2.git`
