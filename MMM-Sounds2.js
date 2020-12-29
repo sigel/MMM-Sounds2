@@ -6,7 +6,7 @@ Module.register('MMM-Sounds2', {
     defaults: {
         debug:          false,
         startupSound:   true,
-        alertSound:     true,
+        alertSound:     false,
         defaultDelay:   10,
         quietTimeStart: null,
         quietTimeEnd:   null
@@ -18,9 +18,9 @@ Module.register('MMM-Sounds2', {
     start: function() {
         this.sendSocketNotification('CONFIG', this.config);
         Log.info('Starting module: ' + this.name);
-        if (this.config.startupSound) {
+        if (this.config.startupSound === true) {
            this.log('Playing Startup Sound');
-           playSound("startup");
+           this.playAlert('startup');
         }
     },
 
@@ -50,12 +50,15 @@ Module.register('MMM-Sounds2', {
                     this.playAlert(payload.sound, payload.delay);
                 }
             }
-        } else if (notification === 'SHOW_ALERT') {
-             if (this.config.alertSound) {
-               this.log('Alert Module Sound Triggered');
-   	           playSound("alert");
-             }
-	      }
+        }
+	if (notification === 'SHOW_ALERT') {
+		let alertsound = payload.sound;
+		if (alertsound) {
+			 this.playAlert(alertsound)
+		} else if (this.config.alertSound === true) {
+			 this.playAlert('alert');
+		}
+	}
     },
 
     /**
